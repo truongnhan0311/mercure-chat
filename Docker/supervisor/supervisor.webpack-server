@@ -1,6 +1,7 @@
 
 [program:webpack-server]
-command=symfony --dir=/var/www/chat-app yarn encore dev-server
+directory=/var/www/chat-app
+command=yarn encore dev-server
 numprocs=1
 autostart=true
 autorestart=true
