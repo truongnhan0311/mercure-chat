@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+    mercury-chat:
+        container_name: mercury-chat
+        image: truongnhan0311/debian:mercury-chat
+        ports:
+            - "8088:8000"
+        restart: always
+        depends_on:
+            - chat-mysql
+            - chat-redis
+            - chat-mail
+        volumes:
+            - .:/var/www/:delegated
+            - ./Docker/run.sh:/run.sh
+    chat-redis:
+        container_name: chat-redis
+        image: redis:7.0-alpine
+        restart: always
+        volumes:
+            - ./Docker/redis.conf:/usr/local/etc/redis/redis.conf
+            - redis-data:/data
+        environment:
+            - REDIS_REPLICATION_MODE=master
+    chat-mail:
+        container_name: chat-mail
+        image: mailhog/mailhog:latest
+        restart: always
+        ports:
+            - "1027:1025"
+            - "8027:8025"
+    chat-mysql:
+        container_name: chat-mysql
+        image: mariadb:10.11
+        ports:
+            - 3309:3306
+        environment:
+            - TZ=Asia/Tokyo
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=ecomnist-api
+            - MYSQL_USER=ecomnist
+            - MYSQL_PASSWORD=Ecomnist@2023!
+        volumes:
+            - chat-mysql:/var/lib/mysql:cached
+        restart: always
+volumes:
+    chat-mysql:
+    redis-data:
