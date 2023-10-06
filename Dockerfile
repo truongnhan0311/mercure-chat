@@ -8,9 +8,9 @@ ADD Docker/run.sh /run.sh
 ADD Docker/composer.phar /usr/local/bin/composer
 RUN chmod 755 /*.sh
 
-RUN cd /var/www/chat && composer install --no-dev &&\
+RUN cd /var/www/chat-app && composer install --no-dev &&\
     php /usr/local/bin/composer clearcache &&\
-    find /var/www/chat/vendor -name ".git" -exec rm -rf {} \; || true
+    find /var/www/chat-app/vendor -name ".git" -exec rm -rf {} \; || true
 
 EXPOSE 80 8000
 

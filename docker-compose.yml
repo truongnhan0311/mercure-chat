@@ -20,7 +20,7 @@ services:
         restart: always
         volumes:
             - ./Docker/redis.conf:/usr/local/etc/redis/redis.conf
-            - redis-data:/data
+            - ./redis-data:/data
         environment:
             - REDIS_REPLICATION_MODE=master
     chat-mail:
@@ -42,7 +42,7 @@ services:
             - MYSQL_USER=ecomnist
             - MYSQL_PASSWORD=Ecomnist@2023!
         volumes:
-            - chat-mysql:/var/lib/mysql:cached
+            - ./chat-mysql:/var/lib/mysql:cached
         restart: always
 volumes:
     chat-mysql:

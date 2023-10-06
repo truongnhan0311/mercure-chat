@@ -1,6 +1,6 @@
 
 [program:symfony-server]
-command=symfony --dir=/var/www/chat server:start
+command=symfony --dir=/var/www/chat-app server:start
 numprocs=1
 autostart=true
 autorestart=true
