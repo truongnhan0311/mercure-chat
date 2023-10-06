@@ -135,6 +135,7 @@
       <path value="$PROJECT_DIR$/chat-app/vendor/easycorp/easyadmin-bundle" />
       <path value="$PROJECT_DIR$/chat-app/vendor/symfony/validator" />
       <path value="$PROJECT_DIR$/chat-app/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/chat-app/vendor/symfony/webpack-encore-bundle" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.0" />

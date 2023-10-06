@@ -139,6 +139,7 @@
       <excludeFolder url="file://$MODULE_DIR$/chat-app/vendor/easycorp/easyadmin-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/chat-app/vendor/symfony/validator" />
       <excludeFolder url="file://$MODULE_DIR$/chat-app/vendor/myclabs/deep-copy" />
+      <excludeFolder url="file://$MODULE_DIR$/chat-app/vendor/symfony/webpack-encore-bundle" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
