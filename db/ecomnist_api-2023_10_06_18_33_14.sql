@@ -36,7 +36,7 @@ CREATE TABLE `doctrine_migration_versions` (
 
 LOCK TABLES `doctrine_migration_versions` WRITE;
 /*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
-INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20231006095246','2023-10-06 09:59:45',62),('DoctrineMigrations\\Version20231006112322','2023-10-06 11:23:32',23);
+INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20231006095246','2023-10-06 09:59:45',62),('DoctrineMigrations\\Version20231006112322','2023-10-06 11:23:32',23),('DoctrineMigrations\\Version20231006113111','2023-10-06 11:31:23',143);
 /*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,6 +82,7 @@ CREATE TABLE `pizza` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `ingredient` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -93,6 +94,33 @@ CREATE TABLE `pizza` (
 LOCK TABLES `pizza` WRITE;
 /*!40000 ALTER TABLE `pizza` DISABLE KEYS */;
 /*!40000 ALTER TABLE `pizza` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pizza_user`
+--
+
+DROP TABLE IF EXISTS `pizza_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pizza_user` (
+  `pizza_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`pizza_id`,`user_id`),
+  KEY `IDX_45B7559CD41D1D42` (`pizza_id`),
+  KEY `IDX_45B7559CA76ED395` (`user_id`),
+  CONSTRAINT `FK_45B7559CA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_45B7559CD41D1D42` FOREIGN KEY (`pizza_id`) REFERENCES `pizza` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pizza_user`
+--
+
+LOCK TABLES `pizza_user` WRITE;
+/*!40000 ALTER TABLE `pizza_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pizza_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -130,4 +158,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-06 18:24:49
+-- Dump completed on 2023-10-06 18:33:14
