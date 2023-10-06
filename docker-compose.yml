@@ -50,7 +50,7 @@ services:
         restart: unless-stopped
         container_name: chat-mercure-server
         ports:
-            - "3000:3000"
+            - "3001:3000"
         environment:
             SERVER_NAME: ':3000'
             MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
