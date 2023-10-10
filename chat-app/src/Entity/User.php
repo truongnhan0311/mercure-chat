@@ -22,7 +22,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'json')]
     private array $roles = [];
 
     /**
@@ -33,6 +33,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToMany(targetEntity: Pizza::class, mappedBy: 'PizzaOfUser')]
     private Collection $pizzas;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Participant::class)]
+    private Collection $participants;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Message::class)]
+    private Collection $messages;
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
@@ -46,6 +52,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->pizzas = new ArrayCollection();
+        $this->participants = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -63,6 +71,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->email = $email;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParticipants()
+    {
+        return $this->participants;
+    }
+
+    /**
+     * @param mixed $participants
+     */
+    public function setParticipants($participants): void
+    {
+        $this->participants = $participants;
     }
 
     /**
@@ -106,6 +130,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->password = $password;
 
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    /**
+     * @param Collection $messages
+     * @return User
+     */
+    public function setMessages(Collection $messages): User
+    {
+        $this->messages = $messages;
         return $this;
     }
 
@@ -177,6 +219,55 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function isIsVerified(): ?bool
+    {
+        return $this->isVerified;
+    }
+
+    public function addParticipant(Participant $participant): static
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants->add($participant);
+            $participant->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participant $participant): static
+    {
+        if ($this->participants->removeElement($participant)) {
+            // set the owning side to null (unless already changed)
+            if ($participant->getUser() === $this) {
+                $participant->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function addMessage(Message $message): static
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages->add($message);
+            $message->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): static
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getUser() === $this) {
+                $message->setUser(null);
+            }
+        }
 
         return $this;
     }
