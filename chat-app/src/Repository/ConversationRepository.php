@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Conversation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<Conversation>
@@ -45,4 +46,26 @@ class ConversationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findConversationByParticipants(int $otherUserId, int $myId)
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb
+            ->select($qb->expr()->count('p.conversation'))
+            ->innerJoin('c.participants', 'p')
+            ->where(
+                $qb->expr()->eq('p.user', ':me '),
+                $qb->expr()->eq('p.user', ':otherUser'),
+            )->groupBy('p.conversation')
+            ->having(
+                $qb->expr()->eq(
+                    $qb->expr()->count('p.conversation'), 2
+                )
+            )
+            ->setParameters([
+                'me' => $myId,
+                'otherUser' => $otherUserId
+            ]);
+
+        return $qb->getQuery()->getResult();
+    }
 }
